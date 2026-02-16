@@ -2,25 +2,17 @@
 
 import Link from "next/link";
 import { useTranslation } from "@/locales/i18n";
-import { Globe, FileText, Github } from "lucide-react";
+import { Globe, FileText } from "lucide-react";
 
 export default function Footer() {
 	const { t } = useTranslation();
 
-	const quickLinks = [
-		{ label: t("footer.linkHome"), href: "/", icon: Globe },
-		{ label: t("footer.linkApiDocs"), href: "/api-docs", icon: FileText },
-		{
-			label: t("footer.linkGithub"),
-			href: "https://github.com/isixe/dqmainer",
-			icon: Github,
-			external: true,
-		},
-	];
+	const quickLinks = [{ label: t("footer.linkApiDocs"), href: "/api-docs", icon: FileText }];
 
 	const socialLinks = [
+		{ label: "Lab", href: "https://itea.dev" },
 		{ label: "GitHub", href: "https://github.com/isixe/dqmainer" },
-		{ label: "Twitter", href: "https://twitter.com" },
+		{ label: "Twitter", href: "https://x.com/isixe_e" },
 	];
 
 	return (
