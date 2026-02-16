@@ -7,7 +7,7 @@ import { Globe, FileText } from "lucide-react";
 export default function Footer() {
 	const { t } = useTranslation();
 
-	const quickLinks = [{ label: t("footer.linkApiDocs"), href: "/api-docs", icon: FileText }];
+	const quickLinks = [{ label: t("footer.linkApiDocs"), href: "/api-docs", icon: FileText, external: false }];
 
 	const socialLinks = [
 		{ label: "Lab", href: "https://itea.dev" },
@@ -38,8 +38,8 @@ export default function Footer() {
 								<li key={link.href}>
 									<Link
 										href={link.href}
-										target={link.external ? "_blank" : undefined}
-										rel={link.external ? "noopener noreferrer" : undefined}
+										target={link?.external ? "_blank" : undefined}
+										rel={link?.external ? "noopener noreferrer" : undefined}
 										className="text-sm text-muted-foreground hover:text-primary transition-colors inline-flex items-center gap-2">
 										<link.icon className="w-3.5 h-3.5" />
 										{link.label}
