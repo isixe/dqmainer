@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useTranslation } from "@/locales/i18n";
 import { Globe, FileText } from "lucide-react";
 
@@ -22,9 +23,13 @@ export default function Footer() {
 					{/* Brand */}
 					<div>
 						<div className="flex items-center gap-2 mb-3">
-							<div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-								<Globe className="w-4 h-4 text-primary-foreground" />
-							</div>
+							<Image
+								src="/favicon.png"
+								alt={t("common.title")}
+								width={32}
+								height={32}
+								className="rounded-lg"
+							/>
 							<span className="font-bold text-lg">{t("common.title")}</span>
 						</div>
 						<p className="text-sm text-muted-foreground leading-relaxed">{t("footer.description")}</p>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useTranslation } from "@/locales/i18n";
 import {
 	DropdownMenu,
@@ -19,7 +20,14 @@ export default function Header() {
 	return (
 		<header className="bg-card">
 			<div className="container mx-auto px-4 py-4 flex items-center justify-between">
-				<Link href="/" className="text-xl font-semibold text-primary hover:opacity-80 transition-opacity">
+				<Link href="/" className="text-xl font-semibold text-primary hover:opacity-80 transition-opacity flex items-center gap-2">
+					<Image
+						src="/favicon.png"
+						alt={t("common.title")}
+						width={24}
+						height={24}
+						className="rounded-sm"
+					/>
 					{t("common.title")}
 				</Link>
 				<nav className="flex items-center gap-6">
