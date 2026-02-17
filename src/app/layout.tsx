@@ -1,40 +1,53 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import "../style/globals.css";
 import ClientProviders from "@/components/ClientProviders";
 
-export const metadata: Metadata = {
-  title: "dqmainer - Domain WHOIS Lookup Tool",
-  description:
-    "Free online domain WHOIS lookup tool. Query domain registration details including registrar, expiration date, name servers, and more using RDAP/WHOIS protocols.",
-  keywords: [
-    "WHOIS lookup",
-    "domain lookup",
-    "domain checker",
-    "RDAP",
-    "domain registration",
-    "domain info",
-    "whois查询",
-    "域名查询",
-  ],
-  authors: [{ name: "dqmainer" }],
-  openGraph: {
-    title: "dqmainer - Domain WHOIS Lookup Tool",
-    description:
-      "Free online domain WHOIS lookup tool. Query domain registration details using RDAP/WHOIS protocols.",
-    type: "website",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+	const headersList = await headers();
+	const protocol = headersList.get("x-forwarded-proto") || "http";
+	const host = headersList.get("host") || "localhost:3000";
+	const url = `${protocol}://${host}`;
+
+	return {
+		title: "dqmainer - Domain WHOIS Lookup Tool",
+		description:
+			"Free online domain WHOIS lookup tool. Query domain registration details including registrar, expiration date, name servers, and more using RDAP/WHOIS protocols.",
+		keywords: [
+			"WHOIS lookup",
+			"domain lookup",
+			"domain checker",
+			"RDAP",
+			"domain registration",
+			"domain info",
+			"whois查询",
+			"域名查询",
+		],
+		authors: [{ name: "dqmainer" }],
+		openGraph: {
+			title: "dqmainer - Domain WHOIS Lookup Tool",
+			siteName: "dqmainer",
+			description:
+				"Free online domain WHOIS lookup tool. Query domain registration details using RDAP/WHOIS protocols.",
+			type: "website",
+			url: url,
+		},
+		alternates: {
+			canonical: url,
+		},
+	};
+}
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className="antialiased min-h-screen flex flex-col">
-        <ClientProviders>{children}</ClientProviders>
-      </body>
-    </html>
-  );
+	return (
+		<html lang="en">
+			<body className="antialiased min-h-screen flex flex-col">
+				<ClientProviders>{children}</ClientProviders>
+			</body>
+		</html>
+	);
 }
