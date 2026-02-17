@@ -27,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
 		openGraph: {
 			title: "dqmainer - Domain WHOIS Lookup Tool",
 			siteName: "dqmainer",
-			images: "/og-image.png",
+			images: `${url}/og-image.png`,
 			description:
 				"Free online domain WHOIS lookup tool. Query domain registration details using RDAP/WHOIS protocols.",
 			type: "website",
