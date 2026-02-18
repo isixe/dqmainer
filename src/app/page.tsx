@@ -133,7 +133,6 @@ export default function Home() {
 									<ArrowLeft className="w-4 h-4" />
 									{t("home.back")}
 								</Button>
-								<h1 className="text-2xl font-bold">{t("home.results")}</h1>
 							</div>
 							<div className="flex items-center gap-2 p-1 rounded-lg">
 								<Button
@@ -185,9 +184,9 @@ export default function Home() {
 					<div className="container mx-auto px-4 max-w-4xl">
 						{results && Object.keys(results).length > 0 && (
 							<>
-								<div className="flex items-center justify-between mb-4">
+								<div className="flex md:items-center items-start justify-between mb-4 md:flex-row flex-col gap-3">
 									<span className="text-sm text-black/60">{t("result.sortBy")}</span>
-									<div className="flex items-center gap-2">
+									<div className="flex items-center gap-2 flex-wrap">
 										<Button
 											variant={sortBy === SortBy.EXPIRES_ASC ? "secondary" : "ghost"}
 											size="sm"
