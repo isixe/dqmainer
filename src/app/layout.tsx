@@ -44,8 +44,11 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const analyticsScript = process.env.ANALYTICS_SCRIPT ?? "";
+
 	return (
 		<html lang="en">
+			<head dangerouslySetInnerHTML={analyticsScript ? { __html: analyticsScript } : undefined} />
 			<body className="antialiased min-h-screen flex flex-col">
 				<ClientProviders>{children}</ClientProviders>
 			</body>
