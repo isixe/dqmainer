@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import "../style/globals.css";
 import ClientProviders from "@/components/ClientProviders";
+import Script from "next/script";
 
 export async function generateMetadata(): Promise<Metadata> {
 	const headersList = await headers();
@@ -48,7 +49,7 @@ export default function RootLayout({
 
 	return (
 		<html lang="en">
-			<head dangerouslySetInnerHTML={analyticsScript ? { __html: analyticsScript } : undefined} />
+			<head>{analyticsScript && <Script src={analyticsScript} id="analytics" data-website-id="dqmainer" defer />}</head>
 			<body className="antialiased min-h-screen flex flex-col">
 				<ClientProviders>{children}</ClientProviders>
 			</body>
