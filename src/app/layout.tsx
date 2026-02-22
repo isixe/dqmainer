@@ -28,6 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
 			"域名注册信息",
 			"域名到期时间",
 			"域名工具",
+			"拾域"
 		],
 		authors: [{ name: "isixe" }],
 		openGraph: {
