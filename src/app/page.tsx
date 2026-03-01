@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -80,35 +81,62 @@ function getExpirationStatus(
 
 export default function Home() {
 	const { t, i18n } = useTranslation();
+	const searchParams = useSearchParams();
 	const [domains, setDomains] = useState("");
 	const [results, setResults] = useState<Results | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [showResults, setShowResults] = useState(false);
 	const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.CARD);
 	const [sortBy, setSortBy] = useState<SortBy>(SortBy.EXPIRES_ASC);
+	const hasProcessedUrl = useRef(false);
 
-	const handleLookup = async () => {
-		if (!domains.trim()) return;
-		const domainList = domains
-			.split(/[\n,]/)
-			.map((d) => d.trim())
-			.filter((d) => d);
-		if (domainList.length === 0) return;
+	const handleLookup = useCallback(
+		async (domainOverride?: string) => {
+			const domainInput = domainOverride ?? domains;
+			if (!domainInput.trim()) return;
+			const domainList = domainInput
+				.split(/[\n,]/)
+				.map((d) => d.trim())
+				.filter((d) => d);
+			if (domainList.length === 0) return;
 
-		setLoading(true);
-		setResults(null);
-		try {
-			const domainParam = domainList.join(",");
-			const res = await fetch(`/api/whois?domain=${encodeURIComponent(domainParam)}`);
-			const data = await res.json();
-			setResults(data);
-			setShowResults(true);
-		} catch {
-			setResults({ error: { found: false, error: t("home.queryFailed") } });
-			setShowResults(true);
+			setLoading(true);
+			setResults(null);
+			try {
+				const domainParam = domainList.join(",");
+				const res = await fetch(`/api/whois?domain=${encodeURIComponent(domainParam)}`);
+				const data = await res.json();
+				setResults(data);
+				setShowResults(true);
+			} catch {
+				setResults({ error: { found: false, error: t("home.queryFailed") } });
+				setShowResults(true);
+			}
+			setLoading(false);
+		},
+		[domains, t],
+	);
+
+	useEffect(() => {
+		if (hasProcessedUrl.current) return;
+		const urlParam = searchParams.get("url");
+		if (urlParam) {
+			hasProcessedUrl.current = true;
+			let domainToCheck = urlParam.trim();
+			try {
+				const urlObj = new URL(domainToCheck);
+				domainToCheck = urlObj.hostname;
+			} catch {
+				domainToCheck = domainToCheck.replace(/^https?:\/\//, "").split("/")[0];
+			}
+			if (domainToCheck) {
+				setDomains(domainToCheck);
+				setTimeout(() => {
+					handleLookup(domainToCheck);
+				}, 100);
+			}
 		}
-		setLoading(false);
-	};
+	}, [searchParams, handleLookup]);
 
 	const handleBack = () => {
 		setShowResults(false);
