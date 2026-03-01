@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -79,7 +79,7 @@ function getExpirationStatus(
 	};
 }
 
-export default function Home() {
+function HomeContent() {
 	const { t, i18n } = useTranslation();
 	const searchParams = useSearchParams();
 	const [domains, setDomains] = useState("");
@@ -200,7 +200,7 @@ export default function Home() {
 									/>
 								</div>
 								<Button
-									onClick={handleLookup}
+									onClick={() => handleLookup()}
 									disabled={loading}
 									className="w-full bg-black hover:bg-black/80 text-white">
 									{loading ? t("home.loading") : t("home.button")}
@@ -413,7 +413,7 @@ export default function Home() {
 							/>
 						</div>
 						<Button
-							onClick={handleLookup}
+							onClick={() => handleLookup()}
 							disabled={loading}
 							className="w-full bg-gray-800 hover:bg-gray-700 text-white font-semibold">
 							{loading ? t("home.loading") : t("home.button")}
@@ -540,5 +540,13 @@ export default function Home() {
 				</div>
 			</section>
 		</div>
+	);
+}
+
+export default function Home() {
+	return (
+		<Suspense fallback={null}>
+			<HomeContent />
+		</Suspense>
 	);
 }
