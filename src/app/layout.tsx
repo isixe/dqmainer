@@ -28,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
 			"域名注册信息",
 			"域名到期时间",
 			"域名工具",
-			"拾域"
+			"拾域",
 		],
 		authors: [{ name: "isixe" }],
 		openGraph: {
@@ -51,11 +51,13 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	const analyticsScript = process.env.ANALYTICS_SCRIPT ?? "";
+	const analyticsScript = process.env.ANALYTICS_SCRIPT || "";
 
 	return (
 		<html lang="en">
-			<head>{analyticsScript && <Script src={analyticsScript} id="analytics" data-website-id="dqmainer" defer />}</head>
+			<head>
+				{analyticsScript ? <Script src={analyticsScript} id="analytics" data-website-id="dqmainer" defer /> : null}
+			</head>
 			<body className="antialiased min-h-screen flex flex-col">
 				<ClientProviders>{children}</ClientProviders>
 			</body>
