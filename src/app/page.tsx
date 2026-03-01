@@ -94,6 +94,9 @@ export default function Home() {
 		async (domainOverride?: string) => {
 			const domainInput = domainOverride ?? domains;
 			if (!domainInput.trim()) return;
+			if (domainOverride) {
+				setDomains(domainOverride);
+			}
 			const domainList = domainInput
 				.split(/[\n,]/)
 				.map((d) => d.trim())
@@ -130,7 +133,6 @@ export default function Home() {
 				domainToCheck = domainToCheck.replace(/^https?:\/\//, "").split("/")[0];
 			}
 			if (domainToCheck) {
-				setDomains(domainToCheck);
 				setTimeout(() => {
 					handleLookup(domainToCheck);
 				}, 100);

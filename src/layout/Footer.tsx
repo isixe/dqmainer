@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useTranslation } from "@/locales/i18n";
-import { Globe, FileText } from "lucide-react";
+import { FileText } from "lucide-react";
 
 export default function Footer() {
 	const { t } = useTranslation();
@@ -23,13 +23,7 @@ export default function Footer() {
 					{/* Brand */}
 					<div>
 						<div className="flex items-center gap-2 mb-3">
-							<Image
-								src="/favicon.png"
-								alt={t("common.title")}
-								width={32}
-								height={32}
-								className="rounded-lg"
-							/>
+							<Image src="/favicon.png" alt={t("common.title")} width={32} height={32} className="rounded-lg" />
 							<span className="font-bold text-lg">{t("common.title")}</span>
 						</div>
 						<p className="text-sm text-muted-foreground leading-relaxed">{t("footer.description")}</p>
