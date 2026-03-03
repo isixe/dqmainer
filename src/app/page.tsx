@@ -362,9 +362,9 @@ function HomeContent() {
 	return (
 		<div className="min-h-screen">
 			{/* Hero Section */}
-			<section className="py-16 md:py-18 text-center bg-gradient-to-b from-white to-gray-50">
+			<section className="py-6 md:py-16 text-center bg-gradient-to-b from-white to-gray-50">
 				<div className="container mx-auto px-4 max-w-4xl">
-					<h1 className="text-3xl md:text-5xl font-black text-black mb-4 tracking-tight">{t("home.heroTitle")}</h1>
+					<h1 className="text-2xl md:text-3xl font-black text-black mb-4 tracking-tight">{t("home.heroTitle")}</h1>
 					<p className="text-lg md:text-xl text-black/60 mb-6 max-w-2xl mx-auto">{t("home.heroSubtitle")}</p>
 
 					{/* Quick Tips */}
