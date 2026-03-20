@@ -156,7 +156,7 @@ function HomeContent() {
 		return (
 			<div className="min-h-screen">
 				<section className="pt-8">
-					<div className="container mx-auto px-4 max-w-4xl">
+					<div className="mx-auto px-4 max-w-4xl">
 						<div className="flex items-center justify-between mb-6">
 							<div className="flex items-center gap-4">
 								<Button variant="outline" size="sm" onClick={handleBack} className="gap-2">
@@ -211,7 +211,7 @@ function HomeContent() {
 				</section>
 
 				<section className="pb-8">
-					<div className="container mx-auto px-4 max-w-4xl">
+					<div className="mx-auto px-4 max-w-4xl">
 						{results && Object.keys(results).length > 0 && (
 							<>
 								<div className="flex md:items-center items-start justify-between mb-4 md:flex-row flex-col gap-3">
@@ -360,47 +360,87 @@ function HomeContent() {
 
 	// Landing Page View
 	return (
-		<div className="min-h-screen">
-			{/* Hero Section */}
-			<section className="py-6 md:py-16 text-center bg-gradient-to-b from-white to-gray-50">
-				<div className="container mx-auto px-4 max-w-4xl">
-					<h1 className="text-2xl md:text-4xl font-black text-black mb-4 tracking-tight">{t("home.heroTitle")}</h1>
-					<p className="text-lg md:text-xl text-black/60 mb-6 max-w-2xl mx-auto">{t("home.heroSubtitle")}</p>
+		<div className="min-h-screen relative overflow-hidden">
+			<div className="absolute inset-0 -z-10">
+				<div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse" />
+				<div
+					className="absolute top-40 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse"
+					style={{ animationDelay: "1s" }}
+				/>
+				<div
+					className="absolute bottom-20 left-1/3 w-80 h-80 bg-green-500/10 rounded-full blur-3xl animate-pulse"
+					style={{ animationDelay: "2s" }}
+				/>
 
-					{/* Quick Tips */}
-					<div className="flex flex-wrap justify-center gap-2 mb-8">
-						<span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium">
-							<Zap className="w-3.5 h-3.5" />
+				<div
+					className="absolute inset-0 opacity-[0.02]"
+					style={{
+						backgroundImage: `linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)`,
+						backgroundSize: "60px 60px",
+					}}
+				/>
+
+				<div className="absolute top-32 right-[15%] w-16 h-16 border border-black/10 rotate-45 animate-float" />
+				<div
+					className="absolute top-48 left-[12%] w-12 h-12 bg-black/5 rounded-full animate-float"
+					style={{ animationDelay: "0.5s" }}
+				/>
+				<div
+					className="absolute bottom-40 right-[20%] w-20 h-20 border border-black/10 rounded-lg rotate-12 animate-float"
+					style={{ animationDelay: "1s" }}
+				/>
+				<div
+					className="absolute bottom-32 left-[20%] w-8 h-8 bg-purple-500/10 rounded-full animate-float"
+					style={{ animationDelay: "1.5s" }}
+				/>
+			</div>
+
+			<section className="py-12 md:py-24 text-center relative">
+				<div className="mx-auto px-4 max-w-4xl relative z-10">
+					<div className="inline-flex items-center gap-2 px-4 py-2 bg-black/5 rounded-full mb-6">
+						<span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+						<span className="text-sm font-medium text-black/70">Free & Instant WHOIS Lookup</span>
+					</div>
+
+					<h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-black mb-6 tracking-tight leading-tight">
+						{t("home.heroTitle")}
+					</h1>
+					<p className="text-base md:text-lg text-black/60 mb-8 max-w-2xl mx-auto leading-relaxed">
+						{t("home.heroSubtitle")}
+					</p>
+
+					<div className="flex flex-wrap justify-center gap-3 mb-10">
+						<span className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-black/10 rounded-full text-sm font-medium text-black/70 shadow-sm">
+							<Zap className="w-4 h-4 text-amber-500" />
 							{t("home.tip1")}
 						</span>
-						<span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-50 text-green-700 rounded-full text-sm font-medium">
-							<CheckCircle className="w-3.5 h-3.5" />
+						<span className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-black/10 rounded-full text-sm font-medium text-black/70 shadow-sm">
+							<CheckCircle className="w-4 h-4 text-green-500" />
 							{t("home.tip2")}
 						</span>
-						<span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-purple-50 text-purple-700 rounded-full text-sm font-medium">
-							<Globe className="w-3.5 h-3.5" />
+						<span className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-black/10 rounded-full text-sm font-medium text-black/70 shadow-sm">
+							<Globe className="w-4 h-4 text-blue-500" />
 							{t("home.tip3")}
 						</span>
 					</div>
 
-					{/* Example Domains */}
-					<div className="mb-6">
-						<p className="text-sm text-black/40 mb-3">{t("home.tryExamples")}</p>
+					<div className="mb-8">
+						<p className="text-sm text-black/40 mb-4">{t("home.tryExamples")}</p>
 						<div className="flex flex-wrap justify-center gap-2">
 							{EXAMPLE_DOMAINS.map((domain) => (
 								<button
 									key={domain}
 									onClick={() => setDomains(domain)}
-									className="px-3 py-1.5 text-sm bg-white border border-black/10 rounded-lg text-black/60 hover:border-black/30 hover:text-black transition-colors">
+									className="px-4 py-2 text-sm bg-white border border-black/10 rounded-lg text-black/70 hover:border-black/30 hover:text-black hover:shadow-md transition-all duration-200 font-mono">
 									{domain}
 								</button>
 							))}
 						</div>
 					</div>
 
-					<div className="mb-8 space-y-4">
+					<div className="max-w-5xl mx-auto space-y-4">
 						<div className="space-y-2">
-							<Label htmlFor="domains" className="text-black font-semibold">
+							<Label htmlFor="domains" className="text-black font-semibold sr-only">
 								{t("home.inputLabel")}
 							</Label>
 							<Textarea
@@ -408,23 +448,36 @@ function HomeContent() {
 								placeholder={t("home.inputPlaceholder")}
 								value={domains}
 								onChange={(e) => setDomains(e.target.value)}
-								rows={6}
-								className="font-mono border-black/20 focus:outline-none focus-visible:ring-0 focus-visible:border-input focus-visible:shadow-none focus:ring-0 outline-none min-h-[160px]"
+								rows={5}
+								className="font-mono mt-10 border-black/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-black/20 focus:border-black/30 bg-white/80 backdrop-blur-sm shadow-lg min-h-[140px] resize-none"
 							/>
 						</div>
-						<Button
-							onClick={() => handleLookup()}
-							disabled={loading}
-							className="w-full bg-gray-800 hover:bg-gray-700 text-white font-semibold">
-							{loading ? t("home.loading") : t("home.button")}
-						</Button>
+
+						<div className="flex flex-col sm:flex-row gap-3">
+							<Button
+								onClick={() => handleLookup()}
+								disabled={loading}
+								className="flex-1 bg-black hover:bg-black/80 text-white py-2 font-semibold md:mt-5 text-sm shadow-lg hover:shadow-xl transition-all duration-200">
+								{loading ? (
+									<span className="flex items-center gap-2">
+										<span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+										{t("home.loading")}
+									</span>
+								) : (
+									<span className="flex items-center gap-2">
+										<Zap className="w-5 h-5" />
+										{t("home.button")}
+									</span>
+								)}
+							</Button>
+						</div>
 					</div>
 				</div>
 			</section>
 
 			{/* Features Section */}
 			<section className="py-16 bg-white">
-				<div className="container mx-auto px-4 max-w-6xl">
+				<div className="mx-auto px-4 max-w-6xl">
 					<div className="text-center mb-12">
 						<h2 className="text-3xl font-black text-black mb-2">{t("home.featuresTitle")}</h2>
 						<p className="text-black/60">{t("home.featuresSubtitle")}</p>
@@ -447,7 +500,7 @@ function HomeContent() {
 
 			{/* Why Choose Us Section */}
 			<section className="py-16 bg-gray-50">
-				<div className="container mx-auto px-4 max-w-6xl">
+				<div className="mx-auto px-4 max-w-6xl">
 					<div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 						<div>
 							<h2 className="text-3xl font-black text-black mb-6">{t("home.whyTitle")}</h2>
@@ -489,7 +542,7 @@ function HomeContent() {
 
 			{/* Professional Features */}
 			<section className="py-16 bg-white">
-				<div className="container mx-auto px-4 max-w-6xl">
+				<div className="mx-auto px-4 max-w-6xl">
 					<div className="text-center mb-12">
 						<h2 className="text-3xl font-black text-black mb-2">{t("home.proTitle")}</h2>
 						<p className="text-black/60">{t("home.proSubtitle")}</p>
@@ -514,7 +567,7 @@ function HomeContent() {
 
 			{/* Testimonials */}
 			<section className="py-16 bg-gray-50">
-				<div className="container mx-auto px-4 max-w-6xl">
+				<div className="mx-auto px-4 max-w-6xl">
 					<div className="text-center mb-12">
 						<h2 className="text-3xl font-black text-black mb-2">{t("home.testimonialsTitle")}</h2>
 						<p className="text-black/60">{t("home.testimonialsSubtitle")}</p>
