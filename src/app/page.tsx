@@ -409,7 +409,7 @@ function HomeContent() {
 						{t("home.heroSubtitle")}
 					</p>
 
-					<div className="flex flex-wrap justify-center gap-3 mb-10">
+					<div className="flex flex-wrap justify-center gap-3 mb-6">
 						<span className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-black/10 rounded-full text-sm font-medium text-black/70 shadow-sm">
 							<Zap className="w-4 h-4 text-amber-500" />
 							{t("home.tip1")}
