@@ -346,8 +346,8 @@ function HomeContent() {
 										})
 										.map(([domain, data]) =>
 											viewMode === ViewMode.CARD ? (
-												<Card key={domain} className="border-black/10 shadow-sm">
-													<CardHeader className="pb-2 border-b border-black/5">
+												<Card key={domain} className="border-black/10 shadow-sm gap-3 sm:gap-6">
+													<CardHeader className="pb-0.5 sm:pb-2 border-b border-black/5">
 														<div className="flex items-center justify-between">
 															<div className="flex items-center gap-2">
 																<button
@@ -365,7 +365,7 @@ function HomeContent() {
 															<FavoriteButton domain={domain} />
 														</div>
 													</CardHeader>
-													<CardContent className="pt-4">
+													<CardContent className="pt-2 sm:pt-4">
 														{data.error ? (
 															<p className="text-red-600 font-medium">{data.error}</p>
 														) : data.found ? (
@@ -432,30 +432,30 @@ function HomeContent() {
 											) : (
 												<div
 													key={domain}
-													className="flex items-center justify-between p-4 bg-white border border-black/10 rounded-lg hover:shadow-sm transition-shadow">
-													<div className="flex items-center gap-2">
+													className="flex flex-col sm:flex-row sm:items-center gap-1.5 p-4 bg-white border border-black/10 rounded-lg hover:shadow-sm transition-shadow">
+													<div className="flex items-center gap-2 min-w-0 w-full sm:w-auto">
 														<button
 															type="button"
 															onClick={() => toggleSelectDomain(domain)}
-															className="text-black/30 hover:text-black/60 transition-colors">
+															className="text-black/30 hover:text-black/60 transition-colors shrink-0 p-1">
 															{selectedDomains.has(domain) ? (
 																<CheckSquare className="w-4 h-4" />
 															) : (
 																<Square className="w-4 h-4" />
 															)}
 														</button>
+														<span className="font-mono text-black font-medium truncate min-w-0 flex-1">{domain}</span>
 														<FavoriteButton domain={domain} />
-														<span className="font-mono text-black font-medium">{domain}</span>
 													</div>
 													{data.error ? (
-														<span className="text-red-600 text-sm">{data.error}</span>
+														<span className="text-red-600 text-sm ml-8 sm:ml-0">{data.error}</span>
 													) : data.found ? (
 														(() => {
 															const status = getExpirationStatus(data.ts?.expires, t);
 															return (
-																<div className="flex items-center gap-3">
+																<div className="flex items-center gap-3 flex-wrap ml-8 sm:ml-auto">
 																	<div
-																		className={`flex items-center gap-1.5 font-medium ${status?.color || "text-black"}`}>
+																		className={`flex items-center gap-1.5 font-medium whitespace-nowrap ${status?.color || "text-black"}`}>
 																		{status?.icon}
 																		<span>{formatDate(data.ts?.expires)}</span>
 																	</div>
@@ -464,7 +464,7 @@ function HomeContent() {
 															);
 														})()
 													) : (
-														<span className="text-black/60 text-sm">{t("home.notFound")}</span>
+														<span className="text-black/60 text-sm ml-8 sm:ml-0">{t("home.notFound")}</span>
 													)}
 												</div>
 											),
