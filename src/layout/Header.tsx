@@ -30,6 +30,9 @@ export default function Header() {
 					<Link href="/api-docs" className="text-sm text-muted-foreground hover:text-primary transition-colors">
 						{t("common.apiDocs")}
 					</Link>
+					<Link href="/favorites" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+						{t("common.favorites")}
+					</Link>
 					<a
 						href="https://github.com/isixe/dqmainer"
 						target="_blank"

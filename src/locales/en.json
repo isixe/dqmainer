@@ -2,7 +2,9 @@
   "common": {
     "title": "dqmainer",
     "home": "Home",
-    "apiDocs": "API Docs"
+    "apiDocs": "API Docs",
+    "favorites": "Favorites",
+    "loading": "Loading..."
   },
   "home": {
     "heroTitle": "Domain WHOIS Lookup",
@@ -71,7 +73,35 @@
     "sortByExpiresDesc": "Expires (Latest first)",
     "sortByDomain": "Domain Name",
     "viewCard": "Card",
-    "viewList": "List"
+    "viewList": "List",
+    "selectAll": "Select All ({{count}})",
+    "selectAllShort": "Select All",
+    "selectedCount": "{{count}} selected",
+    "cancelSelect": "Cancel",
+    "batchFavorite": "Favorite Selected"
+  },
+  "favorites": {
+    "title": "Favorite Domains",
+    "groups": "Groups",
+    "allDomains": "All Domains",
+    "newGroup": "New Group",
+    "groupNamePlaceholder": "Group name",
+    "searchPlaceholder": "Search domains...",
+    "oneClickCheck": "Check All",
+    "export": "Export",
+    "import": "Import",
+    "importError": "Import failed: invalid file format",
+    "batchRemove": "Remove Selected",
+    "domains": "domains",
+    "empty": "No favorite domains yet",
+    "addNote": "Add note",
+    "notePlaceholder": "Enter note...",
+    "sortByName": "By Name",
+    "sortByDate": "By Date",
+    "confirmDeleteGroup": "Delete this group? Domains will be moved to All Domains.",
+    "addToGroup": "Add to Group",
+    "removeFromGroup": "Remove from Group",
+    "batchAddToGroup": "Add to Group"
   },
   "apiDocs": {
     "title": "API Documentation",

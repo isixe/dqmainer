@@ -1,13 +1,26 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef, Suspense } from "react";
+import { useState, useEffect, useCallback, useRef, Suspense, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { useTranslation } from "@/locales/i18n";
-import { Globe, Zap, CheckCircle, BarChart3, ArrowLeft, LayoutGrid, List } from "lucide-react";
+import { useFavorites } from "@/hooks/useFavorites";
+import FavoriteButton from "@/components/FavoriteButton";
+import {
+  Globe,
+  Zap,
+  CheckCircle,
+  BarChart3,
+  ArrowLeft,
+  LayoutGrid,
+  List,
+  Star,
+  CheckSquare,
+  Square,
+} from "lucide-react";
 import {
 	ViewMode,
 	SortBy,
@@ -88,7 +101,9 @@ function HomeContent() {
 	const [showResults, setShowResults] = useState(false);
 	const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.CARD);
 	const [sortBy, setSortBy] = useState<SortBy>(SortBy.EXPIRES_ASC);
+	const [selectedDomains, setSelectedDomains] = useState<Set<string>>(new Set());
 	const hasProcessedUrl = useRef(false);
+	const { isFavorited, batchAddFavorites } = useFavorites();
 
 	const handleLookup = useCallback(
 		async (domainOverride?: string) => {
@@ -123,7 +138,12 @@ function HomeContent() {
 	useEffect(() => {
 		if (hasProcessedUrl.current) return;
 		const urlParam = searchParams.get("url");
-		if (urlParam) {
+		const domainsParam = searchParams.get("domains");
+		if (domainsParam) {
+			hasProcessedUrl.current = true;
+			const decoded = decodeURIComponent(domainsParam);
+			handleLookup(decoded);
+		} else if (urlParam) {
 			hasProcessedUrl.current = true;
 			let domainToCheck = urlParam.trim();
 			try {
@@ -143,7 +163,41 @@ function HomeContent() {
 	const handleBack = () => {
 		setShowResults(false);
 		setResults(null);
+		setSelectedDomains(new Set());
 	};
+
+	const toggleSelectDomain = (domain: string) => {
+		setSelectedDomains((prev) => {
+			const next = new Set(prev);
+			if (next.has(domain)) {
+				next.delete(domain);
+			} else {
+				next.add(domain);
+			}
+			return next;
+		});
+	};
+
+	const toggleSelectAll = useCallback(() => {
+		if (!results) return;
+		const allDomains = Object.keys(results);
+		if (selectedDomains.size === allDomains.length) {
+			setSelectedDomains(new Set());
+		} else {
+			setSelectedDomains(new Set(allDomains));
+		}
+	}, [results, selectedDomains.size]);
+
+	const handleBatchFavorite = () => {
+		if (selectedDomains.size === 0) return;
+		batchAddFavorites(Array.from(selectedDomains));
+		setSelectedDomains(new Set());
+	};
+
+	const resultKeys = useMemo(() => {
+		if (!results) return [];
+		return Object.keys(results);
+	}, [results]);
 
 	const formatDate = (date?: string | Date) => {
 		if (!date) return "-";
@@ -196,7 +250,7 @@ function HomeContent() {
 										value={domains}
 										onChange={(e) => setDomains(e.target.value)}
 										rows={3}
-										className="font-mono focus:outline-none focus-visible:ring-0 focus-visible:border-input focus-visible:shadow-none focus:ring-0 outline-none border-black/20 focus:border-black outline-none"
+										className="font-mono focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:border-black/20 focus-visible:shadow-none focus:ring-0 outline-none border-black/20 focus:border-black/20 outline-none"
 									/>
 								</div>
 								<Button
@@ -215,7 +269,22 @@ function HomeContent() {
 						{results && Object.keys(results).length > 0 && (
 							<>
 								<div className="flex md:items-center items-start justify-between mb-4 md:flex-row flex-col gap-3">
-									<span className="text-sm text-black/60">{t("result.sortBy")}</span>
+									<div className="flex items-center gap-2">
+										<button
+											type="button"
+											onClick={toggleSelectAll}
+											className="flex items-center gap-1.5 text-sm text-black/60 hover:text-black transition-colors">
+											{selectedDomains.size === resultKeys.length && resultKeys.length > 0 ? (
+												<CheckSquare className="w-4 h-4" />
+											) : (
+												<Square className="w-4 h-4" />
+											)}
+											<span>{t("result.selectAll", { count: resultKeys.length })}</span>
+										</button>
+										<span className="text-sm text-black/60">
+											{t("result.sortBy")}
+										</span>
+									</div>
 									<div className="flex items-center gap-2 flex-wrap">
 										<Button
 											variant={sortBy === SortBy.EXPIRES_ASC ? "secondary" : "ghost"}
@@ -237,6 +306,29 @@ function HomeContent() {
 										</Button>
 									</div>
 								</div>
+
+								{selectedDomains.size > 0 && (
+									<div className="flex items-center gap-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg mb-4">
+										<span className="text-sm font-medium text-yellow-800">
+											{t("result.selectedCount", { count: selectedDomains.size })}
+										</span>
+										<Button
+											variant="outline"
+											size="sm"
+											onClick={handleBatchFavorite}
+											className="gap-1.5 text-yellow-700 border-yellow-300 hover:bg-yellow-100">
+											<Star className="w-4 h-4" />
+											{t("result.batchFavorite")}
+										</Button>
+										<Button
+											variant="ghost"
+											size="sm"
+											onClick={() => setSelectedDomains(new Set())}>
+											{t("result.cancelSelect")}
+										</Button>
+									</div>
+								)}
+
 								<div className={viewMode === ViewMode.CARD ? "space-y-4" : "space-y-2"}>
 									{Object.entries(results)
 										.sort((a, b) => {
@@ -256,7 +348,22 @@ function HomeContent() {
 											viewMode === ViewMode.CARD ? (
 												<Card key={domain} className="border-black/10 shadow-sm">
 													<CardHeader className="pb-2 border-b border-black/5">
-														<CardTitle className="text-lg font-mono text-black">{domain}</CardTitle>
+														<div className="flex items-center justify-between">
+															<div className="flex items-center gap-2">
+																<button
+																	type="button"
+																	onClick={() => toggleSelectDomain(domain)}
+																	className="text-black/30 hover:text-black/60 transition-colors">
+																	{selectedDomains.has(domain) ? (
+																		<CheckSquare className="w-4 h-4" />
+																	) : (
+																		<Square className="w-4 h-4" />
+																	)}
+																</button>
+																<CardTitle className="text-lg font-mono text-black">{domain}</CardTitle>
+															</div>
+															<FavoriteButton domain={domain} />
+														</div>
 													</CardHeader>
 													<CardContent className="pt-4">
 														{data.error ? (
@@ -326,7 +433,20 @@ function HomeContent() {
 												<div
 													key={domain}
 													className="flex items-center justify-between p-4 bg-white border border-black/10 rounded-lg hover:shadow-sm transition-shadow">
-													<span className="font-mono text-black font-medium">{domain}</span>
+													<div className="flex items-center gap-2">
+														<button
+															type="button"
+															onClick={() => toggleSelectDomain(domain)}
+															className="text-black/30 hover:text-black/60 transition-colors">
+															{selectedDomains.has(domain) ? (
+																<CheckSquare className="w-4 h-4" />
+															) : (
+																<Square className="w-4 h-4" />
+															)}
+														</button>
+														<FavoriteButton domain={domain} />
+														<span className="font-mono text-black font-medium">{domain}</span>
+													</div>
 													{data.error ? (
 														<span className="text-red-600 text-sm">{data.error}</span>
 													) : data.found ? (
@@ -449,7 +569,7 @@ function HomeContent() {
 								value={domains}
 								onChange={(e) => setDomains(e.target.value)}
 								rows={5}
-								className="font-mono mt-10 border-black/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-black/20 focus:border-black/30 bg-white/80 backdrop-blur-sm shadow-lg min-h-[140px] resize-none"
+								className="font-mono mt-10 border-black/20 focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:border-black/20 focus:border-black/20 bg-white/80 backdrop-blur-sm shadow-lg min-h-[140px] resize-none"
 							/>
 						</div>
 

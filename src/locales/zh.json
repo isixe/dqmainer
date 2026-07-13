@@ -2,7 +2,9 @@
   "common": {
     "title": "拾域",
     "home": "首页",
-    "apiDocs": "API"
+    "apiDocs": "API",
+    "favorites": "收藏",
+    "loading": "加载中..."
   },
   "home": {
     "heroTitle": "域名WHOIS查询",
@@ -71,7 +73,35 @@
     "sortByExpiresDesc": "过期时间（降序）",
     "sortByDomain": "域名名称",
     "viewCard": "卡片",
-    "viewList": "列表"
+    "viewList": "列表",
+    "selectAll": "全选（{{count}}）",
+    "selectAllShort": "全选",
+    "selectedCount": "已选 {{count}} 项",
+    "cancelSelect": "取消选择",
+    "batchFavorite": "收藏选中"
+  },
+  "favorites": {
+    "title": "域名收藏",
+    "groups": "分组",
+    "allDomains": "全部域名",
+    "newGroup": "新建分组",
+    "groupNamePlaceholder": "分组名称",
+    "searchPlaceholder": "搜索域名...",
+    "oneClickCheck": "一键检查",
+    "export": "导出",
+    "import": "导入",
+    "importError": "导入失败：文件格式不正确",
+    "batchRemove": "移除选中",
+    "domains": "个域名",
+    "empty": "暂无收藏域名",
+    "addNote": "添加备注",
+    "notePlaceholder": "输入备注...",
+    "sortByName": "按名称",
+    "sortByDate": "按时间",
+    "confirmDeleteGroup": "确定删除此分组？分组内的域名将移至全部域名。",
+    "addToGroup": "加入分区",
+    "removeFromGroup": "移出分区",
+    "batchAddToGroup": "批量加入分区"
   },
   "apiDocs": {
     "title": "API文档",
