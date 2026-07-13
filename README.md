@@ -13,10 +13,12 @@
 ## Features
 
 - **Real-time WHOIS Lookup**: Quickly get detailed domain registration information, expiration dates, and other data
-- **Batch Query**: Support querying multiple domains simultaneously to improve work efficiency
-- **Intuitive Data Display**: Provides both card and list view modes
-- **Smart Sorting**: Support sorting by domain name, expiration date, etc.
-- **Expiration Status Alerts**: Display different statuses based on domain expiration time (safe, warning, critical)
+- **Batch Query**: Query multiple domains simultaneously to improve work efficiency
+- **Expiration Status Alerts**: Color-coded status indicators (safe, warning, critical) based on remaining days
+- **Favorites & Watchlist**: Save domains to favorites with multi-group organization
+- **Group Management**: Create, rename, delete groups and assign domains to multiple groups
+- **One-Click Re-check**: Batch query all favorited domains from any group with one click
+- **Import / Export**: Export favorites with groups to JSON, 
 - **API Interface**: Provides RESTful API for other applications to call
 
 ## Tech Stack
@@ -76,15 +78,20 @@ dqmainer/
 │   ├── app/             # Next.js App Router
 │   │   ├── api/         # API routes
 │   │   ├── api-docs/    # API documentation page
+│   │   ├── favorites/   # Favorites management page
 │   │   ├── layout.tsx   # App layout
 │   │   └── page.tsx     # Home page
 │   ├── components/      # Components
-│   │   └── ui/          # UI components
-│   ├── layout/          # Layout components
+│   │   ├── ui/          # UI components
+│   │   └── FavoriteButton.tsx  # Favorite toggle button
+│   ├── hooks/           # React hooks
+│   │   └── useFavorites.ts    # Favorites state & localStorage
+│   ├── layout/          # Layout components (Header)
 │   ├── lib/             # Utility library
-│   ├── locales/         # Internationalization files
+│   ├── locales/         # Internationalization files (zh.json, en.json)
 │   ├── style/           # Style files
 │   └── types/           # TypeScript type definitions
+│       └── favorites.ts # Favorites type definitions
 ├── .gitignore           # Git ignore file
 ├── LICENSE              # License
 ├── README.md            # Project documentation
