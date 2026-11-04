@@ -20,7 +20,16 @@ const gradlePath = path.resolve(
 
 let source = readFileSync(gradlePath, "utf8");
 
-const releaseSigningConfig = `
+const signingConfigsBlock = /signingConfigs\s*\{/;
+
+if (!signingConfigsBlock.test(source)) {
+  throw new Error(`Unable to locate a "signingConfigs {" block in ${gradlePath}`);
+}
+
+const envMarker = 'System.getenv("ANDROID_KEY_ALIAS")';
+
+if (!source.includes(envMarker)) {
+  const releaseSigningConfig = `
         release {
             storeFile file('release.keystore')
             storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
@@ -28,34 +37,29 @@ const releaseSigningConfig = `
             keyPassword System.getenv("ANDROID_KEY_PASSWORD")
         }`;
 
-const signingConfigsBlock = /signingConfigs\s*\{/;
-
-if (!signingConfigsBlock.test(source)) {
-  throw new Error(`Unable to locate a "signingConfigs {" block in ${gradlePath}`);
-}
-
-if (!source.includes("signingConfigs.release")) {
   source = source.replace(
     signingConfigsBlock,
     (match) => `${match}\n${releaseSigningConfig}`,
   );
 }
 
-const debugReferences = source.match(/signingConfig signingConfigs\.debug/g) ?? [];
-source = source.replaceAll(
-  "signingConfig signingConfigs.debug",
-  "signingConfig signingConfigs.release",
-);
+const releaseBuildTypeDebug =
+  /(buildTypes\s*\{[\s\S]*?release\s*\{[\s\S]*?)signingConfig\s+signingConfigs\.debug/;
 
-if (debugReferences.length === 0) {
+const releaseBuildTypeRelease =
+  /(buildTypes\s*\{[\s\S]*?release\s*\{[\s\S]*?)signingConfig\s+signingConfigs\.release/;
+
+if (releaseBuildTypeDebug.test(source)) {
+  source = source.replace(releaseBuildTypeDebug, (_match, prefix) => {
+    return `${prefix}signingConfig signingConfigs.release`;
+  });
+} else if (!releaseBuildTypeRelease.test(source)) {
   throw new Error(
-    "No `signingConfig signingConfigs.debug` reference found; the generated " +
-      "build.gradle layout changed and the release build type must be wired manually.",
+    "Unable to locate the release build type in the generated build.gradle; " +
+      "the release build type must be wired manually.",
   );
 }
 
 writeFileSync(gradlePath, source);
 
-console.log(
-  `Android release signing configured (${debugReferences.length} build type(s) updated).`,
-);
+console.log("Android release signing configured for the release build type.");
