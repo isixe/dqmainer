@@ -2,18 +2,20 @@
   "expo": {
     "name": "dqmainer",
     "slug": "dqmainer",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "orientation": "portrait",
     "scheme": "dqmainer",
     "userInterfaceStyle": "light",
     "backgroundColor": "#FFFBFE",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "dev.itea.dqmainer"
+      "bundleIdentifier": "dev.itea.dqmainer",
+      "buildNumber": "1"
     },
     "android": {
       "package": "dev.itea.dqmainer",
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "versionCode": 1
     },
     "web": {
       "bundler": "metro"
