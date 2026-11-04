@@ -1,3 +1,13 @@
-ignoredBuiltDependencies:
-  - sharp
-  - unrs-resolver
+packages:
+  - "apps/*"
+  - "packages/*"
+
+# Expo/Metro resolves every transitive dependency by walking up from the real
+# file path, so a flat node_modules layout is required for React Native.
+nodeLinker: hoisted
+
+allowBuilds:
+  core-js: false
+  msw: false
+  sharp: false
+  unrs-resolver: false

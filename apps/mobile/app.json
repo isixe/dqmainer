@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "dqmainer",
+    "slug": "dqmainer",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "dqmainer",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#FFFBFE",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "dev.itea.dqmainer"
+    },
+    "android": {
+      "package": "dev.itea.dqmainer",
+      "edgeToEdgeEnabled": true
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": ["expo-router"],
+    "experiments": {
+      "typedRoutes": false
+    }
+  }
+}
